@@ -47,7 +47,6 @@
     <pre id="log">Ready.</pre>
 
     <script>
-        const csrf = document.querySelector('meta[name="csrf-token"]').content;
         const routes = {
             status: @json(route('auth.status')),
             nonce: @json(route('auth.nonce')),
@@ -75,6 +74,33 @@
         let isAuthenticated = false;
         let lastFailedAction = null;
         let busy = false;
+
+        function getCsrfToken() {
+            return document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+        }
+
+        function setCsrfToken(token) {
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta && token) {
+                meta.content = token;
+            }
+        }
+
+        /** Laravel also sets XSRF-TOKEN cookie when the session is rotated */
+        function syncCsrfFromCookie() {
+            const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/);
+            if (!match) {
+                return false;
+            }
+            setCsrfToken(decodeURIComponent(match[1]));
+            return true;
+        }
+
+        function applyCsrfFromResponse(data) {
+            if (data?.csrf_token) {
+                setCsrfToken(data.csrf_token);
+            }
+        }
 
         function log(msg, kind = '') {
             logEl.textContent = msg;
@@ -114,19 +140,28 @@
                         credentials: 'same-origin',
                         headers: {
                             'Accept': 'application/json',
-                            'X-CSRF-TOKEN': csrf,
+                            'X-CSRF-TOKEN': getCsrfToken(),
                             ...(options.body ? { 'Content-Type': 'application/json' } : {}),
                             ...options.headers,
                         },
                         ...options,
                     });
                     const data = await res.json().catch(() => ({}));
+
+                    if (res.status === 419 && attempt < retries - 1) {
+                        if (syncCsrfFromCookie()) {
+                            continue;
+                        }
+                    }
+
                     if (!res.ok) {
                         const err = new Error(data.message || res.statusText);
                         err.code = data.code;
-                        err.retryable = data.retryable ?? (res.status >= 500);
+                        err.retryable = data.retryable ?? (res.status >= 500 || res.status === 419);
                         throw err;
                     }
+
+                    applyCsrfFromResponse(data);
                     return data;
                 } catch (e) {
                     lastError = e;
@@ -284,7 +319,8 @@
             clearError();
             setBusy(true);
             try {
-                await requestJson(routes.logout, { method: 'POST', body: '{}' });
+                const data = await requestJson(routes.logout, { method: 'POST', body: '{}' });
+                applyCsrfFromResponse(data);
                 isAuthenticated = false;
                 sessionWallet = null;
                 log('Logged out. Wallet may stay connected in MetaMask without a new popup.');

@@ -69,6 +69,24 @@ class WalletAuthTest extends TestCase
         $this->get(route('dashboard'))->assertRedirect(route('sandbox'));
     }
 
+    public function test_logout_returns_fresh_csrf_token(): void
+    {
+        $user = User::factory()->create([
+            'wallet_address' => '0x742d35cc6634c0532925a3b844bc9e7595f0beb0',
+            'email' => '0x742d35cc6634c0532925a3b844bc9e7595f0beb0@wallet.local',
+        ]);
+
+        $oldToken = csrf_token();
+
+        $response = $this->actingAs($user)->postJson(route('auth.logout'));
+
+        $response->assertOk()
+            ->assertJsonStructure(['message', 'csrf_token']);
+
+        $newToken = $response->json('csrf_token');
+        $this->assertNotSame($oldToken, $newToken);
+    }
+
     public function test_siwe_builder_matches_parser_round_trip(): void
     {
         $builder = app(SiweMessageBuilder::class);

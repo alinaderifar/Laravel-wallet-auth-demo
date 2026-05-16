@@ -150,6 +150,7 @@ class WalletAuthController extends Controller
         return response()->json([
             'message' => 'Logged in',
             'wallet_address' => $user->wallet_address,
+            'csrf_token' => csrf_token(),
         ]);
     }
 
@@ -159,6 +160,9 @@ class WalletAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out']);
+        return response()->json([
+            'message' => 'Logged out',
+            'csrf_token' => csrf_token(),
+        ]);
     }
 }
