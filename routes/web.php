@@ -1,18 +1,15 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WalletAuthController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::view('/', 'sandbox')->name('sandbox');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/auth/nonce', [WalletAuthController::class, 'nonce'])->name('auth.nonce');
+Route::post('/auth/verify', [WalletAuthController::class, 'verify'])->name('auth.verify');
+Route::post('/auth/logout', [WalletAuthController::class, 'logout'])->middleware('auth')->name('auth.logout');
+
+Route::get('/dashboard', DashboardController::class)
+    ->middleware('auth')
+    ->name('dashboard');
