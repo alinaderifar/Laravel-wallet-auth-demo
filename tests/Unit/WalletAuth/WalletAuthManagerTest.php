@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\WalletAuth;
 
-use App\Models\WalletNonce;
-use App\WalletAuth\WalletAuthManager;
+use AliNaderifar\LaravelWalletAuth\LaravelWalletAuthManager;
+use AliNaderifar\LaravelWalletAuth\Models\WalletNonce;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\Support\LoadsSiweFixture;
@@ -33,7 +33,7 @@ class WalletAuthManagerTest extends TestCase
             'expires_at' => $fixture['expiration_at'],
         ]);
 
-        $manager = app(WalletAuthManager::class);
+        $manager = app(LaravelWalletAuthManager::class);
 
         $result = $manager->verifyAndLogin(
             address: $fixture['address'],
@@ -48,7 +48,7 @@ class WalletAuthManagerTest extends TestCase
 
     public function test_full_challenge_flow_via_manager(): void
     {
-        $manager = app(WalletAuthManager::class);
+        $manager = app(LaravelWalletAuthManager::class);
 
         $address = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0';
 
@@ -85,7 +85,7 @@ class WalletAuthManagerTest extends TestCase
             'expires_at' => $fixture['expiration_at'],
         ]);
 
-        $manager = app(WalletAuthManager::class);
+        $manager = app(LaravelWalletAuthManager::class);
         $first = $manager->verifyAndLogin($fixture['address'], $fixture['signature'], $fixture['chain_id']);
 
         WalletNonce::create([

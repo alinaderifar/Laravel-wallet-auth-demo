@@ -7,7 +7,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
-use App\WalletAuth\Services\EthereumSignatureVerifier;
+use AliNaderifar\LaravelWalletAuth\Services\EthereumSignatureVerifier;
 use Elliptic\EC;
 use kornrunner\Keccak;
 

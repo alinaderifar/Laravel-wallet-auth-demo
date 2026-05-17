@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\WalletAuth;
 
-use App\WalletAuth\Services\EthereumSignatureVerifier;
+use AliNaderifar\LaravelWalletAuth\Services\EthereumSignatureVerifier;
 use Tests\Support\LoadsSiweFixture;
 use Tests\TestCase;
 

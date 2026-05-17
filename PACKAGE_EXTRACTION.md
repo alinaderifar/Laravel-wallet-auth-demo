@@ -1,33 +1,16 @@
-# Extracting `app/WalletAuth` into your Spatie package
+# Package integration
 
-Copy the entire `app/WalletAuth/` tree into `src/` and rename the namespace:
+Wallet auth logic lives in **`../wallet-auth`** (`alinaderifar/laravel-wallet-auth`).
 
-| Demo (now) | Package (target) |
-|------------|------------------|
-| `App\WalletAuth\` | `YourVendor\WalletAuth\` |
-| `config/wallet-auth.php` | `config/wallet-auth.php` (mergeable) |
-| `database/migrations/*wallet*` | `database/migrations/` |
-| `tests/Fixtures/siwe-signature.json` | `tests/Fixtures/` |
-| `tests/Unit/WalletAuth/*` | `tests/Unit/` (Testbench) |
-| `tests/Support/LoadsSiweFixture.php` | `tests/Support/` |
+This demo app only provides:
 
-## Stays in the demo app only
+- `app/Http/Controllers/WalletAuthController.php` — HTTP + session
+- `config/wallet-auth.php` — `user_model` and app-specific SIWE text
+- `routes/web.php`, sandbox views, `users.wallet_address` migration
+- Tests that exercise the package via the HTTP layer and fixtures
 
-- `app/Http/Controllers/WalletAuthController.php` — thin HTTP + session layer
-- `resources/views/sandbox.blade.php`
-- `routes/web.php`
-
-## Service provider bindings (from `AppServiceProvider`)
-
-```php
-$this->app->singleton(SignatureVerifierInterface::class, EthereumSignatureVerifier::class);
-$this->app->singleton(WalletAuthManager::class);
-```
-
-## Regenerate the crypto fixture
+Install / update the path dependency:
 
 ```bash
-php scripts/generate-siwe-fixture.php
+composer update alinaderifar/laravel-wallet-auth
 ```
-
-Uses Hardhat account #0 (public test key). Never use that key on mainnet.

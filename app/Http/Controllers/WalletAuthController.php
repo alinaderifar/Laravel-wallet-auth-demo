@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\WalletAuth\WalletAuthManager;
+use AliNaderifar\LaravelWalletAuth\LaravelWalletAuthManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class WalletAuthController extends Controller
 {
     public function __construct(
-        private readonly WalletAuthManager $walletAuth,
+        private readonly LaravelWalletAuthManager $walletAuth,
     ) {}
 
     public function status(Request $request): JsonResponse

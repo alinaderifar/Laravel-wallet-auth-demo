@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\WalletAuth\Services\Siwe\SiweMessageBuilder;
+use AliNaderifar\LaravelWalletAuth\Services\Siwe\SiweMessageBuilder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -104,7 +104,7 @@ class WalletAuthTest extends TestCase
             'expirationTime' => $issuedAt->copy()->addMinutes(5),
         ]);
 
-        $parsed = app(\App\WalletAuth\Services\Siwe\SiweMessageParser::class)->parse($message);
+        $parsed = app(\AliNaderifar\LaravelWalletAuth\Services\Siwe\SiweMessageParser::class)->parse($message);
 
         $this->assertSame('localhost', $parsed['domain']);
         $this->assertSame(1, $parsed['chainId']);

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\WalletAuth;
 
-use App\Models\WalletNonce;
+use AliNaderifar\LaravelWalletAuth\Models\WalletNonce;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\LoadsSiweFixture;
 use Tests\TestCase;
