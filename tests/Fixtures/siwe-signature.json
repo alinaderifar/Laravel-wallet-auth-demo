@@ -1,0 +1,12 @@
+{
+    "description": "Deterministic test keypair \u2014 CI only, never use on mainnet",
+    "address": "0x9cc19654e2fe9b369bd3cd81d403d0e6ad595933",
+    "chain_id": 1,
+    "nonce": "fixture_nonce_deadbeef123456",
+    "message": "localhost wants you to sign in with your Ethereum account:\n0x9cc19654e2fe9b369bd3cd81d403d0e6ad595933\n\nSign in to the wallet auth sandbox.\n\nURI: http://localhost\nVersion: 1\nChain ID: 1\nNonce: fixture_nonce_deadbeef123456\nIssued At: 2020-01-01T00:00:00+00:00\nExpiration Time: 2099-01-01T00:00:00+00:00",
+    "signature": "0xf54c353ebd6a58623f11dbfa8779010e4fe202b353d4410cf43f85e25947743b2e2ea1d04e68246ab5a617f487046df01d92f338264929bd6a7f0f45e605754a1b",
+    "domain": "localhost",
+    "uri": "http://localhost",
+    "issued_at": "2020-01-01T00:00:00+00:00",
+    "expiration_at": "2099-01-01T00:00:00+00:00"
+}

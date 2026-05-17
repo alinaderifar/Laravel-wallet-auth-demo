@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'user_model' => App\Models\User::class,
+
     'nonce_ttl_minutes' => 5,
 
     'siwe' => [
