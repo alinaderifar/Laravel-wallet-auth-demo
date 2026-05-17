@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Siwe;
+namespace App\WalletAuth\Services\Siwe;
 
 use Carbon\Carbon;
 

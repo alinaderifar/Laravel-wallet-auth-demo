@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Services;
+namespace App\WalletAuth\Services;
 
+use App\WalletAuth\Contracts\SignatureVerifierInterface;
 use Elliptic\EC;
 use kornrunner\Keccak;
 
-/**
- * Recovers the Ethereum address from a MetaMask personal_sign signature.
- */
-class EthereumSignatureVerifier
+class EthereumSignatureVerifier implements SignatureVerifierInterface
 {
     public function verify(string $message, string $signature, string $expectedAddress): bool
     {

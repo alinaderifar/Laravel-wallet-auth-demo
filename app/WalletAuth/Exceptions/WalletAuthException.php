@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\WalletAuth\Exceptions;
 
 use Exception;
 use Illuminate\Http\JsonResponse;

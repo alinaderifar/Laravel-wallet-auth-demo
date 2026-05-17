@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\Siwe;
+namespace App\WalletAuth\Services\Siwe;
 
 use App\Models\WalletNonce;
+use App\WalletAuth\Exceptions\WalletAuthException;
 
 class SiweValidator
 {
@@ -63,6 +64,6 @@ class SiweValidator
 
     private function fail(string $code): never
     {
-        throw new \App\Exceptions\WalletAuthException($code);
+        throw new WalletAuthException($code);
     }
 }
